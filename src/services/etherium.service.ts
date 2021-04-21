@@ -16,11 +16,9 @@ export class EtheriumService implements BlockchainService {
       const balance = await this.web3.eth.getBalance(accountId);
       return {
         id: accountId,
-        balance: this.web3.utils.fromWei(balance),
+        balance: this.web3.utils.fromWei(balance, 'ether'),
       };
     });
-
-    console.log(dtos);
 
     return await Promise.all(dtos);
   }
@@ -28,18 +26,20 @@ export class EtheriumService implements BlockchainService {
   async sendTransaction(
     from: string,
     to: string,
-    amount: string,
+    amount: number,
   ): Promise<TransactionDto> {
-    const tx = await this.web3.eth.sendTransaction({
-        from,
-        to,
-        value: this.web3.utils.toWei(amount),
-      })
-      .on('receipt', () => console.log('receipt'));
+    const value = this.web3.utils.toWei(amount.toString(), 'ether');
+    await this.web3.eth.sendTransaction({
+      from,
+      to,
+      value,
+    });
 
-    return { id: 'ololo', from, to, amount, status: 'reciept' };
-  }
-  getTransaction(transactionId: string): Promise<TransactionDto> {
-    throw new Error('Method not implemented.');
+    return {
+      id: '',
+      from,
+      to,
+      amount: this.web3.utils.fromWei(value, 'ether'),
+    };
   }
 }

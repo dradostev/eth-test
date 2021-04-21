@@ -6,7 +6,6 @@ export interface BlockchainService {
   sendTransaction(
     from: string,
     to: string,
-    amount: string,
+    amount: number,
   ): Promise<TransactionDto>;
-  getTransaction(transactionId: string): Promise<TransactionDto>;
 }
