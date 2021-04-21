@@ -1,4 +1,5 @@
-import { Inject } from '@nestjs/common';
+import { HttpException, Inject } from '@nestjs/common';
+import { ErrorDto } from 'src/models/error.dto';
 import { TransactionDto } from 'src/models/transaction.dto';
 import { BlockchainService } from './blockchain.service';
 import { ComissionService } from './comission.service';
@@ -15,13 +16,19 @@ export class TransactionService {
     amount: string,
   ): Promise<TransactionDto> {
     const value = this.comissionService.getComission(parseFloat(amount));
-    const transaction = await this.blockchainService.sendTransaction(
-      from,
-      to,
-      value,
-    );
 
-    return transaction;
+    try {
+      const transaction = await this.blockchainService.sendTransaction(
+        from,
+        to,
+        value,
+      );
+
+      return transaction;
+    } catch (e) {
+      const error = e?.data?.stack?.split('\n')[0];
+      throw new HttpException(error, 400);
+    }
   }
 
   async getTransaction(transactionId: string): Promise<TransactionDto> {
