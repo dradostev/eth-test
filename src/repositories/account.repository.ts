@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { Pool, PoolConfig } from 'pg';
+import { Pool } from 'pg';
 import { AccountDto } from 'src/models/account.dto';
+import { TransactionDto } from 'src/models/transaction.dto';
+import Web3 from 'web3';
 
 @Injectable()
 export class AccountRepository {
@@ -35,5 +37,22 @@ export class AccountRepository {
     });
 
     return dtos;
+  }
+
+  async changeBalance(transaction: TransactionDto): Promise<void> {
+    const pool = new Pool({
+      user: 'ethereum',
+      password: '1234',
+      host: 'localhost',
+      database: 'cryptocurrency',
+      port: 5432,
+    });
+
+    const amount = Web3.utils.toWei(transaction.amount, 'ether');
+    const subQuery = 'UPDATE accounts SET balance = balance - $1 WHERE id = $2';
+    const addQuery = 'UPDATE accounts SET balance = balance + $1 WHERE id = $2';
+
+    await pool.query(subQuery, [amount, transaction.from]);
+    await pool.query(addQuery, [amount, transaction.from]);
   }
 }

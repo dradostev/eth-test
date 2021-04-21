@@ -1,5 +1,7 @@
 import { HttpException, Inject, Injectable } from '@nestjs/common';
 import { TransactionDto } from 'src/models/transaction.dto';
+import { AccountRepository } from 'src/repositories/account.repository';
+import { TransactionRepository } from 'src/repositories/transaction.repository';
 import { BlockchainService } from './blockchain.service';
 import { ComissionService } from './comission.service';
 
@@ -8,6 +10,8 @@ export class TransactionService {
   constructor(
     @Inject('BlockchainService') private blockchainService: BlockchainService,
     private comissionService: ComissionService,
+    private transactionRepository: TransactionRepository,
+    private accountRepository: AccountRepository,
   ) {}
 
   async sendTransaction(
@@ -24,6 +28,9 @@ export class TransactionService {
         value,
       );
 
+      this.transactionRepository.saveTransaction(transaction);
+      this.accountRepository.changeBalance(transaction);
+
       return transaction;
     } catch (e) {
       const error = e?.data?.stack?.split('\n')[0];
@@ -32,6 +39,6 @@ export class TransactionService {
   }
 
   async getTransaction(transactionId: string): Promise<TransactionDto> {
-    return null;
+    return await this.transactionRepository.getTransaction(transactionId);
   }
 }

@@ -3,6 +3,7 @@ import { TransactionDto } from 'src/models/transaction.dto';
 import { BlockchainService } from './blockchain.service';
 import Web3 from 'web3';
 import { Injectable } from '@nestjs/common';
+import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class EtheriumService implements BlockchainService {
@@ -18,7 +19,7 @@ export class EtheriumService implements BlockchainService {
       const balance = await this.web3.eth.getBalance(accountId);
       return {
         id: accountId,
-        balance: this.web3.utils.fromWei(balance, 'ether'),
+        balance,
       };
     });
 
@@ -38,7 +39,7 @@ export class EtheriumService implements BlockchainService {
     });
 
     return {
-      id: '',
+      id: uuid(),
       from,
       to,
       amount: this.web3.utils.fromWei(value, 'ether'),

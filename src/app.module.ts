@@ -1,4 +1,4 @@
-import { Logger, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { AccountController } from './controllers/account.controller';
 import { TransactionController } from './controllers/transaction.controller';
 import { AccountRepository } from './repositories/account.repository';
@@ -7,8 +7,7 @@ import { EtheriumService } from './services/etherium.service';
 import { TransactionService } from './services/transaction.service';
 import { CronService } from './services/cron.service';
 import { ScheduleModule } from '@nestjs/schedule';
-import { Pool } from 'pg';
-import { DbConfigService } from './repositories/db.config.service';
+import { TransactionRepository } from './repositories/transaction.repository';
 
 @Module({
   imports: [ScheduleModule.forRoot()],
@@ -24,8 +23,8 @@ import { DbConfigService } from './repositories/db.config.service';
     },
     TransactionService,
     CronService,
-    DbConfigService,
     AccountRepository,
+    TransactionRepository,
   ],
 })
 export class AppModule {}
