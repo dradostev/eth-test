@@ -2,7 +2,9 @@ import { AccountDto } from 'src/models/account.dto';
 import { TransactionDto } from 'src/models/transaction.dto';
 import { BlockchainService } from './blockchain.service';
 import Web3 from 'web3';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class EtheriumService implements BlockchainService {
   private web3: Web3;
 

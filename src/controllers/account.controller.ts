@@ -1,16 +1,14 @@
-import { Controller, Get, Inject } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { AccountDto } from 'src/models/account.dto';
-import { BlockchainService } from 'src/services/blockchain.service';
+import { AccountRepository } from 'src/repositories/account.repository';
 
 @Controller('accounts')
 export class AccountController {
-  constructor(
-    @Inject('BlockchainService') private blockchainService: BlockchainService,
-  ) {}
+  constructor(private accountRepository: AccountRepository) {}
 
   @Get()
   async getAccounts(): Promise<AccountDto[]> {
-    const accounts = await this.blockchainService.getAccounts();
+    const accounts = await this.accountRepository.getAccounts();
 
     return accounts;
   }

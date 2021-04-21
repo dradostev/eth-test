@@ -1,9 +1,9 @@
-import { HttpException, Inject } from '@nestjs/common';
-import { ErrorDto } from 'src/models/error.dto';
+import { HttpException, Inject, Injectable } from '@nestjs/common';
 import { TransactionDto } from 'src/models/transaction.dto';
 import { BlockchainService } from './blockchain.service';
 import { ComissionService } from './comission.service';
 
+@Injectable()
 export class TransactionService {
   constructor(
     @Inject('BlockchainService') private blockchainService: BlockchainService,

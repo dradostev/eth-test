@@ -25,6 +25,7 @@
     "@nestjs/common": "^7.6.15",
     "@nestjs/core": "^7.6.15",
     "@nestjs/platform-express": "^7.6.15",
+    "@nestjs/schedule": "^0.4.3",
     "node-pg-migrate": "^5.9.0",
     "pg": "^8.6.0",
     "reflect-metadata": "^0.1.13",
