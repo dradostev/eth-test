@@ -1,10 +1,15 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { TransactionController } from './controllers/transaction.controller';
+import { EtheriumService } from './services/etherium.service';
 
 @Module({
   imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [TransactionController],
+  providers: [
+    {
+      provide: 'BlockchainService',
+      useClass: EtheriumService,
+    },
+  ],
 })
 export class AppModule {}
