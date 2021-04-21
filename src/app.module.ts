@@ -1,14 +1,17 @@
 import { Module } from '@nestjs/common';
+import { AccountController } from './controllers/account.controller';
 import { TransactionController } from './controllers/transaction.controller';
 import { EtheriumService } from './services/etherium.service';
 
 @Module({
   imports: [],
-  controllers: [TransactionController],
+  controllers: [TransactionController, AccountController],
   providers: [
     {
       provide: 'BlockchainService',
-      useClass: EtheriumService,
+      useFactory: () => {
+        return new EtheriumService('http://127.0.0.1:8545');
+      },
     },
   ],
 })

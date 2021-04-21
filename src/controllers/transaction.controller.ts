@@ -1,11 +1,13 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, Post } from '@nestjs/common';
 import { CommitTransactionDto } from 'src/models/commit-transaction.dto';
 import { TransactionDto } from 'src/models/transaction.dto';
 import { BlockchainService } from 'src/services/blockchain.service';
 
 @Controller('transactions')
 export class TransactionController {
-  constructor(private blockchainService: BlockchainService) {}
+  constructor(
+    @Inject('BlockchainService') private blockchainService: BlockchainService,
+  ) {}
 
   @Post()
   async commitTransaction(
