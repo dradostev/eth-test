@@ -18,5 +18,3 @@ COPY --from=dev /app/dist /app/dist
 COPY --from=dev /app/migrations /app/migrations
 
 RUN yarn install
-
-CMD ["node", "./dist/main.js"]

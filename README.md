@@ -11,9 +11,17 @@ Run `docker-compose build`
 
 ### Run locally
 
-1. Copy `.env.example` to `.env` (optionally change values)
+1. Copy `.env.dev` to `.env` (optionally change values)
 
 2. Run `docker-compose up`
+
+### Run in dev mode
+
+1. Run `docker-compose -f docker-compose.dev.yml up`
+
+2. Run `DATABASE_URL=postgres://ethereum:1234@localhost:5433/cryptocurrency yarn run migrate up`
+
+3. Run `yarn run start:dev`
 
 ## Architecture
 

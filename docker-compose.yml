@@ -27,10 +27,10 @@ services:
       POSTGRES_USER: "${PGUSER}"
       POSTGRES_DB: "${PGDATABASE}"
     env_file: .env
-    volumes:
-      - ./volumes/postgresql:/var/lib/postgresql
+    # volumes:
+    #   - ./volumes/postgres/data:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "5433:5432"
     networks:
       - main
 
@@ -38,8 +38,6 @@ services:
     image: trufflesuite/ganache-cli:latest
     networks:
       - main
-    ports:
-      - "8545"
 
 networks:
   main:

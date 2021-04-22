@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  rdbms:
+    image: postgres:13-alpine
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: "${PGPASSWORD}"
+      POSTGRES_USER: "${PGUSER}"
+      POSTGRES_DB: "${PGDATABASE}"
+      PORTGRES_PORT: "5432"
+    env_file: .env.dev
+    # volumes:
+    #   - ./volumes/postgresql:/var/lib/postgresql
+    ports:
+      - "5432:5432"
+    networks:
+      - main
+
+  ganache:
+    image: trufflesuite/ganache-cli:latest
+    networks:
+      - main
+    ports:
+      - "8545:8545"
+
+networks:
+  main:
+    driver: bridge

@@ -3,7 +3,7 @@ exports.up = (pgm) => {
     id: { type: 'uuid', notNull: true, primaryKey: true },
     from: { type: 'varchar(255)', notNull: true },
     to: { type: 'varchar(255)', notNull: true },
-    amount: { type: 'float', notNull: true },
+    amount: { type: 'numeric(1000, 0)', notNull: true },
     commited: {
       type: 'timestamp',
       notNull: true,
