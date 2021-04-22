@@ -15,7 +15,7 @@ import { TransactionRepository } from './repositories/transaction.repository';
   providers: [
     {
       provide: 'BlockchainService',
-      useFactory: () => new EtheriumService('http://127.0.0.1:8545'),
+      useFactory: () => new EtheriumService(process.env.ETH_NODE_URL),
     },
     {
       provide: ComissionService,

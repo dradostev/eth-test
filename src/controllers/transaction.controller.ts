@@ -3,7 +3,7 @@ import { CommitTransactionDto } from 'src/models/commit-transaction.dto';
 import { TransactionDto } from 'src/models/transaction.dto';
 import { TransactionService } from 'src/services/transaction.service';
 
-@Controller('transactions')
+@Controller('api/transactions')
 export class TransactionController {
   constructor(private transactionService: TransactionService) {}
 

@@ -1,14 +1,46 @@
 version: "3.8"
 
 services:
-    rdbms:
-        image: postgres:13-alpine
-        restart: always
-        environment:
-            POSTGRES_PASSWORD: "1234"
-            POSTGRES_USER: "ethereum"
-            POSTGRES_DB: "cryptocurrency"
-        volumes:
-            - ./volumes/postgresql:/var/lib/postgresql
-        ports:
-            - "5432:5432"
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: test/crypto
+    env_file: .env
+    environment:
+      DATABASE_URL: "postgres://${PGUSER}:${PGPASSWORD}@${PGHOST}:${PGPORT}/${PGDATABASE}"
+    command: "yarn run migrate up"
+    command: "node ./dist/main.js"
+    ports:
+      - "3000:3000"
+    networks:
+      - main
+    depends_on:
+      - rdbms
+      - ganache
+
+  rdbms:
+    image: postgres:13-alpine
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: "${PGPASSWORD}"
+      POSTGRES_USER: "${PGUSER}"
+      POSTGRES_DB: "${PGDATABASE}"
+    env_file: .env
+    volumes:
+      - ./volumes/postgresql:/var/lib/postgresql
+    ports:
+      - "5432:5432"
+    networks:
+      - main
+
+  ganache:
+    image: trufflesuite/ganache-cli:latest
+    networks:
+      - main
+    ports:
+      - "8545"
+
+networks:
+  main:
+    driver: bridge

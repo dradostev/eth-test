@@ -4,15 +4,17 @@ import { AccountDto } from 'src/models/account.dto';
 import { TransactionDto } from 'src/models/transaction.dto';
 import Web3 from 'web3';
 
+const { PGHOST, PGPORT, PGUSER, PGPASSWORD, PGDATABASE } = process.env;
+
 @Injectable()
 export class AccountRepository {
   async saveAccount(dto: AccountDto): Promise<void> {
     const pool = new Pool({
-      user: 'ethereum',
-      password: '1234',
-      host: 'localhost',
-      database: 'cryptocurrency',
-      port: 5432,
+      user: PGUSER,
+      password: PGPASSWORD,
+      host: PGHOST,
+      database: PGDATABASE,
+      port: parseInt(PGPORT),
     });
     const query =
       'INSERT INTO accounts VALUES ($1, $2) ON CONFLICT (id) DO NOTHING';
@@ -21,12 +23,13 @@ export class AccountRepository {
 
   async getAccounts(): Promise<AccountDto[]> {
     const pool = new Pool({
-      user: 'ethereum',
-      password: '1234',
-      host: 'localhost',
-      database: 'cryptocurrency',
-      port: 5432,
+      user: PGUSER,
+      password: PGPASSWORD,
+      host: PGHOST,
+      database: PGDATABASE,
+      port: parseInt(PGPORT),
     });
+    console.log(pool);
     const result = await pool.query('SELECT * FROM accounts');
 
     const dtos: AccountDto[] = result.rows.map((row) => {
@@ -41,14 +44,14 @@ export class AccountRepository {
 
   async changeBalance(transaction: TransactionDto): Promise<void> {
     const pool = new Pool({
-      user: 'ethereum',
-      password: '1234',
-      host: 'localhost',
-      database: 'cryptocurrency',
-      port: 5432,
+      user: PGUSER,
+      password: PGPASSWORD,
+      host: PGHOST,
+      database: PGDATABASE,
+      port: parseInt(PGPORT),
     });
 
-    const amount = Web3.utils.toWei(transaction.amount, 'ether');
+    const amount = parseFloat(Web3.utils.toWei(transaction.amount, 'ether'));
     const subQuery = 'UPDATE accounts SET balance = balance - $1 WHERE id = $2';
     const addQuery = 'UPDATE accounts SET balance = balance + $1 WHERE id = $2';
 
