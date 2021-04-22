@@ -7,13 +7,13 @@
 
 ### Build
 
-Run `bash docker-compose build`
+Run `docker-compose build`
 
 ### Run locally
 
 1. Copy `.env.example` to `.env` (optionally change values)
 
-2. Run `bash docker-compose up`
+2. Run `docker-compose up`
 
 ## Architecture
 
